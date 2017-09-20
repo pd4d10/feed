@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
@@ -22,7 +22,11 @@
   },
   "homepage": "https://github.com/pd4d10/feed#readme",
   "dependencies": {
-    "koa": "^2.3.0"
+    "feed": "^1.1.0",
+    "koa": "^2.3.0",
+    "koa-router": "^7.2.1",
+    "marked": "^0.3.6",
+    "node-fetch": "^1.7.3"
   },
   "devDependencies": {
     "nodemon": "^1.12.1"

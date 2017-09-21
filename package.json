@@ -26,7 +26,8 @@
     "koa": "^2.3.0",
     "koa-router": "^7.2.1",
     "marked": "^0.3.6",
-    "node-fetch": "^1.7.3"
+    "node-fetch": "^1.7.3",
+    "raven": "^2.1.2"
   },
   "devDependencies": {
     "nodemon": "^1.12.1"

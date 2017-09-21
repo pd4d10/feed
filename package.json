@@ -4,6 +4,9 @@
   "version": "0.0.1",
   "description": "",
   "main": "app.js",
+  "now": {
+    "alias": "feed"
+  },
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",

@@ -1,3 +1,4 @@
+const { stringify } = require('querystring')
 const Koa = require('koa')
 const KoaRouter = require('koa-router')
 const Raven = require('raven')
@@ -16,14 +17,16 @@ const PAGE_SIZE = 20 // 20 items for every pull
 
 router.get('/github-issue/:owner/:repo', async ctx => {
   const { owner, repo } = ctx.params
-  const api = `https://api.github.com/repos/${owner}/${repo}/issues?state=all&creator=${owner}`
+  const query = stringify({
+    creator: ctx.query.alluser ? undefined : owner, // Only show issues created by owner by default
+    per_page: PAGE_SIZE,
+  })
+  const api = `https://api.github.com/repos/${owner}/${repo}/issues?${query}`
   const res = await fetch(api)
   const issues = await res.json()
-  // const issues = require('./data')
 
   const feed = new Feed({
-    title: `Issues - ${owner}/${repo}`,
-    description: `GitHub issues of ${owner}/${repo}`,
+    title: `Issues · ${owner}/${repo}`,
     id: `https://github.com/${owner}/${repo}/issues`,
     link: `https://github.com/${owner}/${repo}/issues`,
     author: {
@@ -60,8 +63,7 @@ router.get('/zhihu-zhuanlan/:name', async ctx => {
 
   const feed = new Feed({
     title: `${name} - 知乎专栏`,
-    description: `${name} - 知乎专栏`,
-    id: name,
+    id: `https://zhuanlan.zhihu.com/${name}`,
     link: `https://zhuanlan.zhihu.com/${name}`,
   })
 
@@ -86,8 +88,6 @@ router.get('/zhihu-zhuanlan/:name', async ctx => {
   ctx.set('Content-Type', 'application/atom+xml')
   ctx.body = feed.atom1()
 })
-
-// router.get('/', )
 
 app.use(router.routes()).use(router.allowedMethods())
 

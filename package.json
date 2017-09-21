@@ -27,6 +27,7 @@
   "dependencies": {
     "feed": "^1.1.0",
     "koa": "^2.3.0",
+    "koa-morgan": "^1.0.1",
     "koa-router": "^7.2.1",
     "marked": "^0.3.6",
     "node-fetch": "^1.7.3",

@@ -1,6 +1,7 @@
 const { stringify } = require('querystring')
 const Koa = require('koa')
 const KoaRouter = require('koa-router')
+const morgan = require('koa-morgan')
 const Raven = require('raven')
 const fetch = require('node-fetch')
 const Feed = require('feed')
@@ -88,6 +89,28 @@ router.get('/zhihu-zhuanlan/:name', async ctx => {
   ctx.set('Content-Type', 'application/atom+xml')
   ctx.body = feed.atom1()
 })
+
+// https://github.com/koajs/koa/wiki/Error-Handling
+app.use(async (ctx, next) => {
+  try {
+    await next()
+  } catch (err) {
+    ctx.status = err.status || 500
+    ctx.body = err.message
+
+    // You can get eventId either as the synchronous return value, or via the callback
+    Raven.captureException(err, function(sendErr, eventId) {
+      // This callback fires once the report has been sent to Sentry
+      if (sendErr) {
+        console.error('Failed to send captured exception to Sentry')
+      } else {
+        console.log('Captured exception and send to Sentry successfully')
+      }
+    })
+  }
+})
+
+app.use(morgan('combined'))
 
 app.use(router.routes()).use(router.allowedMethods())
 

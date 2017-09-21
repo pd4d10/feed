@@ -39,7 +39,7 @@ router.get('/github-issue/:owner/:repo', async ctx => {
   issues.forEach(issue => {
     feed.addItem({
       title: issue.title,
-      id: issue.id,
+      id: issue.html_url,
       link: issue.html_url,
       content: marked(issue.body),
       author: [
@@ -71,7 +71,7 @@ router.get('/zhihu-zhuanlan/:name', async ctx => {
   posts.forEach(post => {
     feed.addItem({
       title: post.title,
-      id: post.slug,
+      id: `https://zhuanlan.zhihu.com${post.url}`,
       link: `https://zhuanlan.zhihu.com${post.url}`,
       description: post.summary,
       content: post.content,

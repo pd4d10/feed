@@ -18,10 +18,11 @@ const PAGE_SIZE = 20 // 20 items for every pull
 
 router.get('/github-issue/:owner/:repo', async ctx => {
   const { owner, repo } = ctx.params
-  const query = stringify({
-    creator: ctx.query.alluser ? undefined : owner, // Only show issues created by owner by default
-    per_page: PAGE_SIZE,
-  })
+  const queryObj = { per_page: PAGE_SIZE }
+  if (!ctx.query.alluser) {
+    queryObj.creator = owner
+  }
+  const query = stringify(queryObj)
   const api = `https://api.github.com/repos/${owner}/${repo}/issues?${query}`
   const res = await fetch(api)
   const issues = await res.json()

@@ -34,6 +34,7 @@ router.get('/github-issue/:owner/:repo', async ctx => {
       name: owner,
       link: `https://github.com/${owner}`,
     },
+    updated: issues.length ? new Date(issues[0].created_at) : new Date(0),
   })
 
   issues.forEach(issue => {
@@ -66,6 +67,7 @@ router.get('/zhihu-zhuanlan/:name', async ctx => {
     title: `${name} - 知乎专栏`,
     id: `https://zhuanlan.zhihu.com/${name}`,
     link: `https://zhuanlan.zhihu.com/${name}`,
+    updated: posts.length ? new Date(posts[0].publishedTime) : new Date(0),
   })
 
   posts.forEach(post => {
